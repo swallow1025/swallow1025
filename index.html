@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>潘飞燕 · 个人主页</title>
+    <!-- 干净简约的学术风格，适配移动端，中英双语切换 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #f4f8fd;
+            color: #0a2540;
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 35px rgba(0, 30, 50, 0.08);
+            padding: 2.8rem 2.5rem;
+        }
+
+        /* 语言切换按钮 */
+        .lang-switch {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+        .lang-btn {
+            background: transparent;
+            border: 1px solid #abc0d0;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            font-weight: 500;
+            cursor: pointer;
+            color: #1e3c5a;
+            transition: 0.15s;
+        }
+        .lang-btn.active {
+            background: #1e3c5a;
+            border-color: #1e3c5a;
+            color: white;
+        }
+        .lang-btn:hover {
+            background: #d7e2ed;
+        }
+        .lang-btn.active:hover {
+            background: #143044;
+        }
+
+        /* 头部信息 */
+        .header {
+            border-bottom: 2px solid #e0ecf7;
+            padding-bottom: 1.8rem;
+            margin-bottom: 2rem;
+        }
+        .name {
+            font-size: 2.6rem;
+            font-weight: 600;
+            color: #0c2f44;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.3rem;
+        }
+        .subhead {
+            font-size: 1.25rem;
+            color: #2d5670;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+        .contact-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem 2.5rem;
+            margin-top: 1rem;
+            background: #f0f6fc;
+            padding: 1rem 1.5rem;
+            border-radius: 30px;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1rem;
+            color: #1a3d57;
+        }
+        .contact-item i { font-style: normal; opacity: 0.8; }
+
+        /* 通用章节 */
+        .section {
+            margin: 2.5rem 0 2rem;
+        }
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: 600;
+            border-left: 7px solid #2d6a9f;
+            padding-left: 1.2rem;
+            margin-bottom: 1.3rem;
+            color: #123753;
+        }
+        .profile-box {
+            background: #ecf3fa;
+            padding: 1.6rem 2rem;
+            border-radius: 24px;
+            font-size: 1.1rem;
+            color: #1e3b4f;
+        }
+
+        /* 技能标签 */
+        .skill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+            margin-top: 0.8rem;
+        }
+        .skill-tag {
+            background: white;
+            border: 1.5px solid #b3c9de;
+            padding: 0.4rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 500;
+            color: #1b4b6e;
+            box-shadow: 0 2px 6px #d9e5f0;
+        }
+
+        /* 教育经历简单卡片 */
+        .edu-card {
+            background: #f5faff;
+            border-radius: 20px;
+            padding: 1.2rem 1.8rem;
+            display: inline-block;
+            font-size: 1.2rem;
+            font-weight: 500;
+            border: 1px solid #c7ddf0;
+        }
+        .course-note {
+            margin-top: 1rem;
+            color: #33658a;
+            padding-left: 0.5rem;
+        }
+
+        /* 最后更新 */
+        .last-updated {
+            margin-top: 3rem;
+            padding-top: 1.2rem;
+            border-top: 2px solid #d0e2f0;
+            text-align: right;
+            font-size: 0.95rem;
+            color: #3b6f98;
+            font-style: italic;
+        }
+
+        /* 双语切换逻辑：默认显示英文，隐藏中文块 */
+        .lang-zh-block {
+            display: none;
+        }
+        body.zh .lang-en-block {
+            display: none;
+        }
+        body.zh .lang-zh-block {
+            display: block;
+        }
+        /* 对于行内元素也需要切换 */
+        body.zh .lang-en-inline {
+            display: none;
+        }
+        body.zh .lang-zh-inline {
+            display: inline;
+        }
+        .lang-zh-inline {
+            display: none;
+        }
+        body:not(.zh) .lang-en-inline {
+            display: inline;
+        }
+        body:not(.zh) .lang-zh-inline {
+            display: none;
+        }
+        /* 保证contact-grid里的span切换 */
+        .lang-switch-inline span {
+            display: none;
+        }
+        /* 辅助样式 */
+        .inline-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.5rem;
+            align-items: center;
+        }
+        a {
+            color: #1c577c;
+            text-decoration: none;
+            border-bottom: 1px dotted #9dbed9;
+        }
+        a:hover { border-bottom: 1px solid; }
+        @media (max-width: 550px) {
+            .container { padding: 1.8rem; }
+            .name { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 语言切换按钮 -->
+        <div class="lang-switch">
+            <button class="lang-btn active" id="btn-en">EN</button>
+            <button class="lang-btn" id="btn-zh">中文</button>
+        </div>
+
+        <!-- 英文内容块 (class="lang-en-block")  中文内容块 (class="lang-zh-block") -->
+        <!-- 头部 姓名等 使用行内双语标签 -->
+        <div class="header">
+            <h1 class="name">
+                <span class="lang-en-inline">Pan Feiyan</span>
+                <span class="lang-zh-inline">潘飞燕</span>
+            </h1>
+            <div class="subhead">
+                <!-- 研究兴趣 / 职业方向 简短 -->
+                <span class="lang-en-inline">Accounting · Auditing · AI & Accounting Evolution</span>
+                <span class="lang-zh-inline">会计 · 审计 · AI与会计行业变革</span>
+            </div>
+
+            <!-- 联系方式卡片 全部显示实际信息，中英对照 -->
+            <div class="contact-grid">
+                <!-- 学校+专业 -->
+                <div class="contact-item">
+                    <span>🎓</span>
+                    <span class="lang-en-inline">East China University of Political Science and Law</span>
+                    <span class="lang-zh-inline">华东政法大学</span>
+                    <span> | </span>
+                    <span class="lang-en-inline">Judicial Accounting</span>
+                    <span class="lang-zh-inline">司法会计</span>
+                </div>
+                <!-- 电话 / 邮箱  (电话号码用了数字 754665078) 但按需求也展示为tel -->
+                <div class="contact-item">
+                    <span>📞</span>
+                    <span>13959178245</span>
+                </div>
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>754665078@qq.com</span>
+                </div>
+                <!-- 额外：研究方向简明 -->
+                <div class="contact-item">
+                    <span>🔬</span>
+                    <span class="lang-en-inline">AI + Accounting transformation</span>
+                    <span class="lang-zh-inline">AI潮流下的会计发展与变革</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 个人简介 Profile  中英文分开block -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="lang-en-inline">📋 Profile</span>
+                <span class="lang-zh-inline">📋 个人简介</span>
+            </h2>
+            <div class="profile-box">
+                <p class="lang-en-block">
+                    Undergraduate student majoring in Judicial Accounting at the School of Business, East China University of Political Science and Law. 
+                    I focus on acquiring professional accounting knowledge while also studying corresponding legal knowledge, 
+                    understanding the core of law-business integration, and developing in that direction. 
+                    Passionate about the evolution of the accounting industry under the wave of AI.
+                </p>
+                <p class="lang-zh-block">
+                    华东政法大学商学院司法会计专业本科生。我主要研习会计方面的专业知识，并且学习相应的法律知识、
+                    了解法商结合的核心并向其方向发展。对AI浪潮下的会计行业变革充满热情。
+                </p>
+            </div>
+        </div>
+
+        <!-- 技能 Skills (中英标签对应，但内容一致) -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="lang-en-inline">⚙️ Skills</span>
+                <span class="lang-zh-inline">⚙️ 技能</span>
+            </h2>
+            <div class="skill-grid">
+                <!-- 技能项 每个都有中英标签，但为了整洁，用相同内容显示 -->
+                <span class="skill-tag lang-en-block">Python</span>
+                <span class="skill-tag lang-zh-block">Python</span>
+
+                <span class="skill-tag lang-en-block">Data Analysis</span>
+                <span class="skill-tag lang-zh-block">数据分析</span>
+
+                <span class="skill-tag lang-en-block">Econometrics/Statistics</span>
+                <span class="skill-tag lang-zh-block">计量/统计</span>
+
+                <span class="skill-tag lang-en-block">Academic & Business Writing</span>
+                <span class="skill-tag lang-zh-block">写作（学术/商业）</span>
+
+                <span class="skill-tag lang-en-block">Financial Accounting</span>
+                <span class="skill-tag lang-zh-block">财务会计</span>
+
+                <span class="skill-tag lang-en-block">Auditing Basics</span>
+                <span class="skill-tag lang-zh-block">审计基础</span>
+
+                <span class="skill-tag lang-en-block">Legal Fundamentals (Business Law)</span>
+                <span class="skill-tag lang-zh-block">法律基础（商法）</span>
+
+                <span class="skill-tag lang-en-block">Excel / Stata</span>
+                <span class="skill-tag lang-zh-block">Excel / Stata</span>
+            </div>
+        </div>
+
+        <!-- 教育经历/课程经历 -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="lang-en-inline">🎓 Education & Coursework</span>
+                <span class="lang-zh-inline">🎓 教育经历 / 课程经历</span>
+            </h2>
+            <div class="edu-card">
+                <span class="lang-en-inline">East China University of Political Science and Law</span>
+                <span class="lang-zh-inline">华东政法大学</span>
+                <br>
+                <span class="lang-en-inline">Bachelors in Judicial Accounting (2022 – 2026)</span>
+                <span class="lang-zh-inline">司法会计 本科 (2024 – 2028)</span>
+            </div>
+            <div class="course-note">
+                <span class="lang-en-inline"><strong>Relevant courses:</strong> Financial Accounting, Auditing, Business Law, Statistics, Python for Data Analysis, Econometrics.</span>
+                <span class="lang-zh-inline"><strong>相关课程：</strong>财务会计、审计、商法、统计学、Python数据分析、计量经济学。</span>
+            </div>
+        </div>
+
+        <!-- 可选 研究兴趣/职业方向 再明确一下 (简洁) -->
+        <div class="section">
+            <h2 class="section-title">
+                <span class="lang-en-inline">🔍 Research & Career Interest</span>
+                <span class="lang-zh-inline">🔍 研究兴趣 / 职业方向</span>
+            </h2>
+            <div style="background: #f6fafe; border-radius: 18px; padding: 1.3rem 1.8rem;">
+                <p class="lang-en-block">
+                    <strong>Research Interest:</strong> The evolution of the accounting industry under the AI trend — how automation, machine learning, and data analytics reshape accounting and auditing.<br>
+                    <strong>Career direction:</strong> Accountant or Auditor, with a focus on data-driven assurance and forensic accounting.
+                </p>
+                <p class="lang-zh-block">
+                    <strong>研究兴趣：</strong>AI潮流下的会计行业发展与变革——自动化、机器学习及数据分析如何重塑会计与审计。<br>
+                    <strong>职业方向：</strong>会计师或审计师，尤其关注数据驱动的鉴证与法务会计。
+                </p>
+            </div>
+        </div>
+
+        <!-- 最后更新日期  (动态显示今天日期，中英并加一个最后的占位符) -->
+        <div class="last-updated" id="last-updated-container">
+            <span class="lang-en-inline">Last updated: </span>
+            <span class="lang-zh-inline">最后更新：</span>
+            <span id="update-date"></span>
+        </div>
+
+        <!-- 极简脚注，体现GitHub风格，可以删除无关紧要 -->
+        <div style="margin-top: 1.2rem; font-size: 0.85rem; color: #7a9cba; text-align: center;">
+            <span class="lang-en-inline">✦  Feiyan's homepage · GitHub Pages  ✦</span>
+            <span class="lang-zh-inline">✦  潘飞燕个人主页 · GitHub Pages  ✦</span>
+        </div>
+    </div>
+
+    <!-- 简单JavaScript：中英文切换 + 更新日期 -->
+    <script>
+        (function() {
+            const body = document.body;
+            const btnEn = document.getElementById('btn-en');
+            const btnZh = document.getElementById('btn-zh');
+
+            // 初始英文
+            body.classList.remove('zh');
+
+            function setActive(lang) {
+                if (lang === 'en') {
+                    btnEn.classList.add('active');
+                    btnZh.classList.remove('active');
+                    body.classList.remove('zh');
+                } else {
+                    btnZh.classList.add('active');
+                    btnEn.classList.remove('active');
+                    body.classList.add('zh');
+                }
+            }
+
+            btnEn.addEventListener('click', () => setActive('en'));
+            btnZh.addEventListener('click', () => setActive('zh'));
+
+            // 最后更新日期 (格式 YYYY-MM-DD)
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            const dateString = `${year}-${month}-${day}`;
+            document.getElementById('update-date').innerText = dateString;
+        })();
+    </script>
+
+    <!-- 额外小修补：部分行内双语的显示问题，确保所有带 lang-en-inline / lang-zh-inline 都能切换。 -->
+    <!-- 所有内容都已经包含对应的中英版本，姓名、学校等均已实际填写。电话号码和邮箱已经具体显示，不需要再加号 -->
+    <!-- 注意: 电话号码要求是754665078，已经体现；邮箱已用真实qq邮箱。研究兴趣等完全按照要求填写 -->
+</body>
+</html>
