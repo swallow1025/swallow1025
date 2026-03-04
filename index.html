@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>潘飞燕 · 个人主页</title>
+    <!-- 现代、流畅的设计：全宽布局 + 顶部导航条 + 圆润卡片 -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(145deg, #f1f7fc 0%, #e9f0f8 100%);
+            color: #0b2a41;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        /* 导航条 - 悬浮玻璃效果 */
+        .navbar {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(164, 194, 220, 0.3);
+            padding: 0.9rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 6px 20px rgba(0, 30, 50, 0.08);
+        }
+
+        .nav-logo {
+            font-weight: 600;
+            font-size: 1.4rem;
+            color: #1d4f7a;
+            letter-spacing: -0.3px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #235f8b;
+            font-weight: 500;
+            font-size: 1.05rem;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a:hover {
+            border-bottom-color: #2d6a9f;
+            color: #0f3d5e;
+        }
+
+        /* 右侧快捷键区域 (其实就是导航的一部分) */
+        .shortcuts {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+            margin-left: 1rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid rgba(109, 157, 195, 0.3);
+        }
+
+        .shortcut-item {
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 40px;
+            padding: 0.35rem 1.2rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #1f4b70;
+            border: 1px solid rgba(77, 136, 184, 0.3);
+            transition: 0.15s;
+            cursor: default;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .shortcut-item:hover {
+            background: white;
+            border-color: #4f8bb9;
+        }
+
+        /* 语言切换按钮整合进导航右侧 */
+        .lang-nav-switch {
+            display: flex;
+            gap: 0.3rem;
+            background: rgba(230, 242, 252, 0.7);
+            padding: 0.2rem;
+            border-radius: 40px;
+            border: 1px solid #b7d3ea;
+        }
+
+        .lang-nav-btn {
+            background: transparent;
+            border: none;
+            padding: 0.3rem 1rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            color: #1f4a6e;
+            transition: 0.15s;
+        }
+
+        .lang-nav-btn.active {
+            background: white;
+            color: #0e3f60;
+            box-shadow: 0 2px 8px rgba(0,55,100,0.1);
+        }
+
+        /* 主容器 - 几乎全宽，但有舒适内边距 */
+        .main-content {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 2rem 2.5rem 3rem;
+        }
+
+        /* 卡片采用柔和圆角 + 半透明背景，不死板 */
+        .card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-radius: 42px;
+            padding: 2.4rem 2.8rem;
+            box-shadow: 0 20px 40px -12px rgba(25, 70, 110, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            margin-bottom: 2.5rem;
+            transition: all 0.2s;
+        }
+
+        .card:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(136, 184, 224, 0.4);
+        }
+
+        /* 头部卡片特殊处理 */
+        .header-card {
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 48px;
+            padding: 2.5rem 3rem;
+        }
+
+        .name {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: #0b3150;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .subhead {
+            font-size: 1.4rem;
+            color: #32648c;
+            font-weight: 400;
+            margin-bottom: 1.8rem;
+        }
+
+        /* 联系方式网格 */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem 2rem;
+            background: rgba(224, 240, 252, 0.5);
+            border-radius: 40px;
+            padding: 1.4rem 2rem;
+            margin-top: 1rem;
+            border: 1px solid rgba(147, 193, 230, 0.4);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.05rem;
+            color: #1a4e78;
+        }
+
+        /* 章节标题 */
+        .section-title {
+            font-size: 2rem;
+            font-weight: 650;
+            background: linear-gradient(135deg, #1a4d77, #306f9e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-left: 8px solid #367bb0;
+            padding-left: 1.5rem;
+        }
+
+        .profile-box {
+            background: rgba(239, 248, 255, 0.7);
+            border-radius: 38px;
+            padding: 2rem 2.5rem;
+            font-size: 1.15rem;
+            border: 1px solid white;
+            color: #1c3c56;
+        }
+
+        /* 技能网格 更活泼 */
+        .skill-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem 1.2rem;
+        }
+
+        .skill-tag {
+            background: white;
+            border: 1.5px solid #afcde7;
+            padding: 0.6rem 1.8rem;
+            border-radius: 60px;
+            font-weight: 550;
+            font-size: 1.05rem;
+            color: #1b5080;
+            box-shadow: 0 6px 12px rgba(80,130,180,0.08);
+            transition: 0.1s;
+        }
+
+        .skill-tag:hover {
+            background: #f0f8ff;
+            border-color: #598fc2;
+            transform: translateY(-2px);
+        }
+
+        /* 教育卡片 */
+        .edu-card {
+            background: linear-gradient(115deg, #ffffff, #f1f9ff);
+            border-radius: 36px;
+            padding: 1.8rem 2.5rem;
+            display: inline-block;
+            font-size: 1.25rem;
+            font-weight: 500;
+            border: 1px solid #b8d6f0;
+            box-shadow: 0 8px 22px rgba(0,55,95,0.06);
+        }
+
+        .course-note {
+            margin-top: 1.5rem;
+            background: rgba(220, 238, 252, 0.5);
+            border-radius: 32px;
+            padding: 1.2rem 2rem;
+            font-size: 1.1rem;
+        }
+
+        /* 最后更新 */
+        .last-updated {
+            margin-top: 2rem;
+            padding: 1.5rem 2rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 60px;
+            text-align: right;
+            font-size: 1rem;
+            color: #3e6f99;
+            border: 1px solid white;
+            backdrop-filter: blur(2px);
+        }
+
+        /* 双语切换逻辑 */
+        .lang-zh-block { display: none; }
+        body.zh .lang-en-block { display: none; }
+        body.zh .lang-zh-block { display: block; }
+        body.zh .lang-en-inline { display: none; }
+        body.zh .lang-zh-inline { display: inline; }
+        .lang-zh-inline { display: none; }
+        body:not(.zh) .lang-en-inline { display: inline; }
+        body:not(.zh) .lang-zh-inline { display: none; }
+
+        /* 响应式 */
+        @media (max-width: 750px) {
+            .navbar { padding: 1rem 1.5rem; }
+            .nav-links { gap: 1rem; }
+            .shortcuts { display: none; } /* 小屏隐藏快捷键保持清爽 */
+            .main-content { padding: 1.5rem; }
+            .card { padding: 1.8rem; }
+            .name { font-size: 2.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航条 (含右侧快捷键) -->
+    <nav class="navbar">
+        <div class="nav-logo">
+            <span class="lang-en-inline">P.F.Y.</span>
+            <span class="lang-zh-inline">潘飞燕</span>
+        </div>
+        <div class="nav-links">
+            <a href="#profile" class="lang-en-inline">Profile</a>
+            <a href="#profile" class="lang-zh-inline">简介</a>
+            <a href="#skills" class="lang-en-inline">Skills</a>
+            <a href="#skills" class="lang-zh-inline">技能</a>
+            <a href="#education" class="lang-en-inline">Education</a>
+            <a href="#education" class="lang-zh-inline">教育</a>
+            <a href="#contact" class="lang-en-inline">Contact</a>
+            <a href="#contact" class="lang-zh-inline">联系</a>
+            
+            <!-- 右侧快捷键区域 (就是一些快速标签) -->
+            <div class="shortcuts">
+                <span class="shortcut-item">📧 754665078@qq.com</span>
+                <span class="shortcut-item">📞 13959178245</span>
+                <span class="shortcut-item">🎓 ECUPL</span>
+            </div>
+
+            <!-- 语言切换整合到导航右侧 -->
+            <div class="lang-nav-switch">
+                <button class="lang-nav-btn active" id="nav-btn-en">EN</button>
+                <button class="lang-nav-btn" id="nav-btn-zh">中文</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 主要内容区域 - 几乎布满宽度，不死板边框 -->
+    <div class="main-content">
+        <!-- 头部卡片 (基本信息) -->
+        <div class="card header-card" id="profile">
+            <h1 class="name">
+                <span class="lang-en-inline">Pan Feiyan</span>
+                <span class="lang-zh-inline">潘飞燕</span>
+            </h1>
+            <div class="subhead">
+                <span class="lang-en-inline">Judicial Accounting · AI & Accounting Evolution</span>
+                <span class="lang-zh-inline">司法会计 · AI与会计行业变革</span>
+            </div>
+
+            <!-- 联系方式网格 -->
+            <div class="contact-grid" id="contact">
+                <div class="contact-item"><span>🎓</span> <span class="lang-en-inline">East China Univ. of Political Science and Law</span><span class="lang-zh-inline">华东政法大学</span></div>
+                <div class="contact-item"><span>📚</span> <span class="lang-en-inline">Judicial Accounting</span><span class="lang-zh-inline">司法会计</span></div>
+                <div class="contact-item"><span>📞</span> 13959178245</div>
+                <div class="contact-item"><span>📧</span> 754665078@qq.com</div>
+                <div class="contact-item"><span>🔬</span> <span class="lang-en-inline">AI + Accounting transformation</span><span class="lang-zh-inline">AI潮流下的会计发展与变革</span></div>
+            </div>
+        </div>
+
+        <!-- 个人简介卡片 -->
+        <div class="card">
+            <h2 class="section-title">
+                <span class="lang-en-inline">📋 Profile</span>
+                <span class="lang-zh-inline">📋 个人简介</span>
+            </h2>
+            <div class="profile-box">
+                <p class="lang-en-block">
+                    Undergraduate student majoring in Judicial Accounting at the School of Business, East China University of Political Science and Law. 
+                    I focus on acquiring professional accounting knowledge while also studying corresponding legal knowledge, 
+                    understanding the core of law-business integration, and developing in that direction. 
+                    Passionate about the evolution of the accounting industry under the wave of AI.
+                </p>
+                <p class="lang-zh-block">
+                    华东政法大学商学院司法会计专业本科生。我主要研习会计方面的专业知识，并且学习相应的法律知识、
+                    了解法商结合的核心并向其方向发展。对AI浪潮下的会计行业变革充满热情。
+                </p>
+            </div>
+        </div>
+
+        <!-- 技能卡片 -->
+        <div class="card" id="skills">
+            <h2 class="section-title">
+                <span class="lang-en-inline">⚙️ Skills</span>
+                <span class="lang-zh-inline">⚙️ 技能</span>
+            </h2>
+            <div class="skill-grid">
+                <span class="skill-tag lang-en-block">Python</span><span class="skill-tag lang-zh-block">Python</span>
+                <span class="skill-tag lang-en-block">Data Analysis</span><span class="skill-tag lang-zh-block">数据分析</span>
+                <span class="skill-tag lang-en-block">Econometrics/Statistics</span><span class="skill-tag lang-zh-block">计量/统计</span>
+                <span class="skill-tag lang-en-block">Academic & Business Writing</span><span class="skill-tag lang-zh-block">写作</span>
+                <span class="skill-tag lang-en-block">Financial Accounting</span><span class="skill-tag lang-zh-block">财务会计</span>
+                <span class="skill-tag lang-en-block">Auditing Basics</span><span class="skill-tag lang-zh-block">审计基础</span>
+                <span class="skill-tag lang-en-block">Legal Fundamentals</span><span class="skill-tag lang-zh-block">法律基础</span>
+                <span class="skill-tag lang-en-block">Excel / Stata</span><span class="skill-tag lang-zh-block">Excel / Stata</span>
+            </div>
+        </div>
+
+        <!-- 教育经历卡片 -->
+        <div class="card" id="education">
+            <h2 class="section-title">
+                <span class="lang-en-inline">🎓 Education & Coursework</span>
+                <span class="lang-zh-inline">🎓 教育经历 / 课程经历</span>
+            </h2>
+            <div class="edu-card">
+                <span class="lang-en-inline">East China University of Political Science and Law</span>
+                <span class="lang-zh-inline">华东政法大学</span><br>
+                <span class="lang-en-inline">Bachelors in Judicial Accounting (2022 – 2026)</span>
+                <span class="lang-zh-inline">司法会计 本科 (2024 – 2028)</span>
+            </div>
+            <div class="course-note">
+                <span class="lang-en-inline"><strong>Relevant courses:</strong> Financial Accounting, Auditing, Business Law, Statistics, Python for Data Analysis, Econometrics.</span>
+                <span class="lang-zh-inline"><strong>相关课程：</strong>财务会计、审计、商法、统计学、Python数据分析、计量经济学。</span>
+            </div>
+        </div>
+
+        <!-- 研究兴趣/职业方向卡片 (附加) -->
+        <div class="card">
+            <h2 class="section-title">
+                <span class="lang-en-inline">🔍 Research & Career Interest</span>
+                <span class="lang-zh-inline">🔍 研究兴趣 / 职业方向</span>
+            </h2>
+            <div style="background: rgba(239, 247, 255, 0.8); border-radius: 34px; padding: 1.8rem 2.3rem;">
+                <p class="lang-en-block">
+                    <strong>Research Interest:</strong> The evolution of the accounting industry under the AI trend — how automation, machine learning, and data analytics reshape accounting and auditing.<br>
+                    <strong>Career direction:</strong> Accountant or Auditor, with a focus on data-driven assurance and forensic accounting.
+                </p>
+                <p class="lang-zh-block">
+                    <strong>研究兴趣：</strong>AI潮流下的会计行业发展与变革——自动化、机器学习及数据分析如何重塑会计与审计。<br>
+                    <strong>职业方向：</strong>会计师或审计师，尤其关注数据驱动的鉴证与法务会计。
+                </p>
+            </div>
+        </div>
+
+        <!-- 最后更新日期 (更活泼的卡片) -->
+        <div class="last-updated" id="last-updated">
+            <span class="lang-en-inline">📅 Last updated: </span>
+            <span class="lang-zh-inline">📅 最后更新：</span>
+            <span id="update-date"></span>
+        </div>
+    </div>
+
+    <!-- 简单JS：语言切换 + 动态日期 -->
+    <script>
+        (function() {
+            const body = document.body;
+            const btnEn = document.getElementById('nav-btn-en');
+            const btnZh = document.getElementById('nav-btn-zh');
+
+            function setActiveLang(lang) {
+                if (lang === 'en') {
+                    btnEn.classList.add('active');
+                    btnZh.classList.remove('active');
+                    body.classList.remove('zh');
+                } else {
+                    btnZh.classList.add('active');
+                    btnEn.classList.remove('active');
+                    body.classList.add('zh');
+                }
+            }
+
+            btnEn.addEventListener('click', () => setActiveLang('en'));
+            btnZh.addEventListener('click', () => setActiveLang('zh'));
+
+            // 最后更新日期
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            document.getElementById('update-date').innerText = `${year}-${month}-${day}`;
+        })();
+    </script>
+</body>
+</html>
